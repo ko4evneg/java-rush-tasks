@@ -15,8 +15,8 @@ public class Solution {
 
         searchFileVisitor.setPartOfName("");
         searchFileVisitor.setPartOfContent("UY");
-        searchFileVisitor.setMinSize(0);
-        searchFileVisitor.setMaxSize(550);
+        searchFileVisitor.setMinSize(50);
+        searchFileVisitor.setMaxSize(300);
 
         Files.walkFileTree(Paths.get("D:/temp_java/java_dir"), searchFileVisitor);
 

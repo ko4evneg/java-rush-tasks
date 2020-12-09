@@ -1,5 +1,6 @@
 package com.javarush.task.task31.task3111;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -16,15 +17,15 @@ public class SearchFileVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         if (!file.getFileName().toString().contains(partOfName))
             return FileVisitResult.CONTINUE;
-        if (file.toFile().length() <= minSize)
-            return FileVisitResult.CONTINUE;
-        if (file.toFile().length() >= maxSize)
-            return FileVisitResult.CONTINUE;
         if (!(new String(Files.readAllBytes(file))).contains(partOfContent))
+            return FileVisitResult.CONTINUE;
+        if (attrs.size() <= minSize)
+            return FileVisitResult.CONTINUE;
+        if (attrs.size() >= maxSize )
             return FileVisitResult.CONTINUE;
 
         foundFiles.add(file);
-        return super.visitFile(file, attrs);
+        return FileVisitResult.CONTINUE;
     }
 
     public void setPartOfName(String partOfName) {
@@ -47,3 +48,4 @@ public class SearchFileVisitor extends SimpleFileVisitor<Path> {
         return foundFiles;
     }
 }
+
