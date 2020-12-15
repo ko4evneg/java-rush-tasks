@@ -1,6 +1,5 @@
 package com.javarush.task.task32.task3201;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -15,7 +14,7 @@ public class Solution {
         String text = args[2];
 
         RandomAccessFile file = new RandomAccessFile(fileName, "rw");
-        position = position > file.length() ? file.length() : position;
+        position = Math.min(position, file.length());
         file.seek(position);
         file.write(text.getBytes());
         file.close();
