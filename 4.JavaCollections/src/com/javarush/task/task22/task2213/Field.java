@@ -105,37 +105,28 @@ public class Field {
      * Удаляем заполненные линии
      */
     public void removeFullLines() {
-        int[][] copyMatrix = new int[height][width];
-        int copyIndex = height - 1;
+        //Создаем список для хранения линий
+        ArrayList<int[]> lines = new ArrayList<int[]>();
 
-        loop:
-        for (int i = height - 1; i >= 0; i--) {
+        //Копируем все непустые линии в список.
+        for (int i = 0; i < height; i++) {
+            //подсчитываем количество единиц в строке - просто суммируем все ее значения
+            int count = 0;
             for (int j = 0; j < width; j++) {
-                if (matrix[i][j] == 0) {
-                    copyMatrix[copyIndex--] = matrix[i];
-                    continue loop;
-                }
+                count += matrix[i][j];
             }
 
+            //Если сумма строки не равна ее ширине - добавляем в список
+            if (count != width)
+                lines.add(matrix[i]);
         }
-        matrix = copyMatrix;
-    }
 
-    public static void main(String[] args) {
-        Field field = new Field(5,5);
-        field.matrix = new int[][]{
-                {0, 0, 0, 1, 0},
-                {1, 1, 1, 1, 1},
-                {0, 0, 1, 0, 0},
-                {1, 1, 1, 1, 1},
-                {0, 0, 0, 1, 0},
-        };
-        field.removeFullLines();
-        for (int i = 0; i <field.matrix.length ; i++) {
-            for (int j = 0; j <field.matrix[i].length ; j++) {
-                System.out.print(field.matrix[i][j]);
-            }
-            System.out.println();
+        //Добавляем недостающие строки в начало списка.
+        while (lines.size() < height) {
+            lines.add(0, new int[width]);
         }
+
+        //Преобразуем список обратно в матрицу
+        matrix = lines.toArray(new int[height][width]);
     }
 }
