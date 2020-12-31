@@ -4,6 +4,7 @@ public class SnakeSection {
     private int x;
     private int y;
 
+
     public SnakeSection(int x, int y) {
         this.x = x;
         this.y = y;
@@ -25,7 +26,9 @@ public class SnakeSection {
         SnakeSection that = (SnakeSection) o;
 
         if (x != that.x) return false;
-        return y == that.y;
+        if (y != that.y) return false;
+
+        return true;
     }
 
     @Override
