@@ -33,24 +33,46 @@ public class Solution {
     }
 
     public static StringBuilder getLine(String... words) {
-        StringBuilder result = null;
         ArrayList<String> listStrings = new ArrayList<>(Arrays.asList(words));
-        if (listStrings.size() == 1)
-            return new StringBuilder(words[0]);
 
-        for (int i = 0; i < words.length && i + 1 != words.length; i++) {
-            String lastChar = Character.toString(words[i].charAt(words[i].length() - 1)).toLowerCase();
-            String s = words[i + 1];
-            if (s.toLowerCase().startsWith(lastChar)) {
-                listStrings.remove(s);
-                listStrings.remove(words[i]);
-                listStrings.add(0, s);
-                result = getLine(listStrings.toArray(new String[]{}));
-                if (result == null)
-                    continue;
-                return result.insert(0, words[i] + " ");
+        StringBuilder result = new StringBuilder("");
+        //?        if (words.length > 0)
+
+        for (int i = 0; i < words.length; i++) {
+            String nextWord;
+            String firstWord;
+            if (i + 1 == words.length) {
+                String tempWord = listStrings.get(i);
+                listStrings.remove(tempWord);
+                listStrings.add(0, tempWord);
+                nextWord = listStrings.get(1);
+            } else {
+                nextWord = listStrings.get(i + 1);
+            }
+            firstWord = listStrings.get(0);
+            char lastChar = Character.toLowerCase(firstWord.charAt(firstWord.length() - 1));
+            char firstChar = Character.toLowerCase(nextWord.charAt(0));
+            System.out.printf("Comparing %s:%c with %s:%c.\n", firstWord, lastChar, nextWord, firstChar);
+
+            if (firstChar == lastChar) {
+                if (i < listStrings.size() - 1) {
+                    //  Iterating unless 1 word left OR no matching words left
+                    listStrings.remove(firstWord);
+                    listStrings.remove(nextWord);
+                    listStrings.add(0, nextWord);
+                    StringBuilder iterationResult = getLine(listStrings.toArray(new String[]{}));
+                    listStrings.add(firstWord);
+                    if (!iterationResult.toString().equals(""))
+                        result.append(iterationResult + " " + nextWord);
+                } else {    //(i == listStrings.size() - 1)
+                    //  The deepest iteration only
+                    return new StringBuilder(firstWord);
+                }
+            } else {    //(firstChar != lastChar)
+                continue;
             }
         }
-        return null;
+        //  All iterations, except the deepest
+        return result;
     }
 }

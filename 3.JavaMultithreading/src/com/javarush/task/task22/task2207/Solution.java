@@ -1,10 +1,7 @@
 package com.javarush.task.task22.task2207;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /* 
@@ -14,43 +11,41 @@ import java.util.regex.Pattern;
 public class Solution {
     public static List<Pair> result = new LinkedList<>();
 
-    public static void main(String[] args) {
-        String s = "";
-        String fileName = "";
-
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            fileName = "D:\\temp_java\\test.txt";// reader.readLine();
-            reader.close();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+    public static void main(String[] args) throws Exception {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String fileName = reader.readLine();
+        reader.close();
+        BufferedReader readerF = new BufferedReader(new FileReader(fileName));
+        StringBuilder sb = new StringBuilder();
+        while (readerF.ready()) {
+            sb.append(readerF.readLine() + " ");
         }
-        try {
-            BufferedReader fileReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"UTF-8"));
-            String temp = null;
-            while ((temp = fileReader.readLine()) != null){
-                s += temp + System.lineSeparator();
+        readerF.close();
+        String[] arr = sb.toString().trim().split("\\s+");
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (set.contains(i)) continue;
+            for (int j = i+1; j < arr.length; j++) {
+                String x = new StringBuilder(arr[j]).reverse().toString();
+                if (x.equals(arr[i])) {
+                    Pair pair = new Pair();
+                    pair.first = x;
+                    pair.second = arr[j];
+                    result.add(pair);
+                    set.add(j);
+                    break;
+                }
             }
-            fileReader.close();
-        } catch (FileNotFoundException foundException) {
-            foundException.printStackTrace();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
         }
-        s = s.replaceAll("(\\n|\\r\\n)", " ");
-        StringBuilder sb = new StringBuilder(s);
-        findNext(sb);
+
+        for (Pair item : result) {
+            System.out.println(item);
+        }
     }
 
     public static class Pair {
         String first;
         String second;
-
-        public Pair() {}
-        public Pair(String first, String second) {
-            this.first = first;
-            this.second = second;
-        }
 
         @Override
         public boolean equals(Object o) {
@@ -81,27 +76,4 @@ public class Solution {
         }
     }
 
-    private static void findNext(StringBuilder sb) {
-        int nextSpace = sb.indexOf(" ");
-        String s;
-        if (nextSpace > 0) {
-            //take 1st word and remove it from sb
-            s = sb.substring(0, nextSpace);
-            StringBuilder temp = new StringBuilder(s);
-            String reverseS = temp.reverse().toString();
-            sb = sb.replace(0, nextSpace + 1,"");
-            //extract words left and comparing with reverse 1st word (and adding Pair on match)
-            String[] strings = sb.toString().replaceAll("\\s\\s+"," ").trim().split(" ");
-            for (String str : strings) {
-                if (reverseS.equals(str)) {
-                    result.add(new Pair(s, reverseS));
-                    sb.replace(sb.indexOf(reverseS), sb.indexOf(reverseS) + reverseS.length(), "");
-                    while (sb.indexOf(" ") == 0)
-                        sb.replace(0, 1, "");
-                    break;
-                }
-            }
-            findNext(sb);
-        }
-    }
 }
