@@ -11,9 +11,8 @@ public class Solution {
                 telNumber.matches("(.*--.*|(.*-.*){3,})") ||    //3 check
                 telNumber.matches("((.*\\(.*){2,}|(.*\\).*){2,})") || telNumber.matches(".*-.*[\\(\\)].*") ||   //4 check
                 telNumber.matches("\\((?!.*\\))") || telNumber.matches(".*(?<!\\(\\d{3})\\).*") ||  //double brackets check and 5 check
-                //telNumber.matches(".*\\((?!\\d{3}\\)).*") ||    //5 check
                 telNumber.matches(".*[^0-9\\(\\)\\+-].*") ||    //6 check
-                telNumber.matches(".*\\D$")  //6 check
+                telNumber.matches(".*\\D$")  //7 check
         )
             return false;
         return true;
