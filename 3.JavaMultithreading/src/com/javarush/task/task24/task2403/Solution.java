@@ -23,6 +23,7 @@ public class Solution {
     }
 
     public static class C extends ArrayDeque {
+        @Override
         public C clone() {
             return (C) super.clone();
         }
