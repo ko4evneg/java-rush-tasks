@@ -26,6 +26,39 @@ public class Solution {
     }
 
     public static int getRectangleCount(byte[][] a) {
-        return 0;
+        int count = 0;
+        int arrWidth = a[0].length;
+        int arrHeight = a.length;
+        for (int j = 0; j < arrHeight; j++) {
+            for (int i = 0; i < arrWidth; i++) {
+                int boxWidth = 0;
+                boolean isFound = false;
+                int startInRow = 0;
+
+                //Check for the corner of rectangle and measuring width
+                while (a[j][i] == 1) {
+                    if (!isFound) {
+                        isFound = true;
+                        count++;
+                        startInRow = i;
+                    }
+                    a[j][i] = 0;
+                    if (i + 1 < arrWidth)
+                        i++;
+                    boxWidth++;
+                }
+                //Zeroing next raws, when find rectangle
+                if (isFound) {
+                    i--;
+                    int j2 = j;
+                    while (j2 + 1 < arrHeight && a[++j2][startInRow] == 1) {
+                        for (int k = startInRow; k < startInRow + boxWidth; k++) {
+                            a[j2][k] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
     }
 }
