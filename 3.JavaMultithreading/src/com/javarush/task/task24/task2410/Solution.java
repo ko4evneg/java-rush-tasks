@@ -18,10 +18,9 @@ public class Solution {
                 countItems++;
                 System.out.println(name + " item " + countItems);
             }
+
             public Iterator next() {
-                countItems++;
-                System.out.println(name + " item " + countItems);
-                return this;
+                return getIterator(name);
             }
         };
     }
