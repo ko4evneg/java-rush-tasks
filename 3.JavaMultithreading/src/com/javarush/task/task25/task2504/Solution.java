@@ -12,11 +12,7 @@ public class Solution {
                     thread.start();
                     break;
                 case WAITING:
-                    thread.interrupt();
-                    break;
                 case TIMED_WAITING:
-                    thread.interrupt();
-                    break;
                 case BLOCKED:
                     thread.interrupt();
                     break;
