@@ -1,5 +1,7 @@
 package com.javarush.task.task25.task2503;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,22 +52,18 @@ public enum Column implements Columnable {
      */
     public static List<Column> getVisibleColumns() {
         List<Column> result = new LinkedList<>();
+        int[] resultArr = new int[realOrder.length];
+        //realOrder[индекс в энуме] = порядок отображения; -1, если колонка не отображается.
+        int nulled = resultArr.length - 1;
         for (int i = 0; i < realOrder.length; i++) {
-            if (realOrder[i] != -1) {
-                //realOrder[индекс в энуме] = порядок отображения; -1, если колонка не отображается.
-                if (result.size() == 0)
-                    result.add(Column.values()[i]);
-                else {
-                    for (int j = 0; j < result.size(); j++) {
-                        int currentOrdinal = result.get(j).ordinal();
-                        if (realOrder[currentOrdinal] < realOrder[Column.values()[i].ordinal()])
-                            continue;
-                        else {
-                            result.add(j - 1 < 0 ? 0 : j - 1, Column.values()[i]);
-                            break;
-                        }
-                    }
-                }
+            if (realOrder[i] != -1)
+                resultArr[realOrder[i]] = i;
+            else
+                resultArr[nulled--] = -1;
+        }
+        for (int i = 0; i < resultArr.length ; i++) {
+            if (resultArr[i] != -1) {
+                result.add(Column.values()[resultArr[i]]);
             }
         }
         return result;
