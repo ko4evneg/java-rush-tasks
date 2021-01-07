@@ -7,7 +7,7 @@ public class TaskManipulator implements Runnable, CustomThreadManipulator {
     @Override
     public void start(String threadName) {
         this.threadName = threadName;
-        thread = new Thread(this,threadName);
+        thread = new Thread(this, threadName);
         thread.start();
     }
 
@@ -18,11 +18,15 @@ public class TaskManipulator implements Runnable, CustomThreadManipulator {
 
     @Override
     public void run() {
-        try {
-            while (!thread.isInterrupted()) {
-                System.out.println(threadName);
+
+        while (!Thread.currentThread().isInterrupted()) {
+            System.out.println(threadName);
+            try {
                 Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
-        } catch (InterruptedException e) {}
+        }
+
     }
 }
