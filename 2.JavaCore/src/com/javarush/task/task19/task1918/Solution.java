@@ -65,6 +65,7 @@ public class Solution {
 
         while (itr.hasNext()) {
             Tag tagB = itr.next();
+            //check if tag is needed
             if (!tagB.name.equals("/" + tagName)) {
                 itr.remove();
                 continue;
