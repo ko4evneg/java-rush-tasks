@@ -12,32 +12,32 @@ import java.util.Comparator;
 public class Solution {
 
     public static void main(String[] args) {
-        Integer[] arr = new Integer[]{32, 21, 14, 8, 10, 17};
+        Integer[] arr = new Integer[]{32, 21, 8, 11, 17, 9 };
         arr = sort(arr);
         Arrays.toString(arr);
-        for (Integer integer : arr) {
-            System.out.println(integer);
-        }
-
     }
 
     public static Integer[] sort(Integer[] array) {
-        double median = array.length % 2 != 0 ? array[array.length / 2] : (array[array.length / 2] + array[array.length / 2 - 1]) / 2.0;
-        System.out.println(median);
-        ArrayList<Integer> arrList = new ArrayList<>(Arrays.asList(array));
-        Collections.sort(arrList, new Comparator<Integer>() {
+        //implement logic here
+        final double mediana;
+        int middle = array.length / 2;
+        Arrays.sort(array);
+
+        if (array.length % 2 != 0) {
+            mediana = array[middle];
+        } else {
+            mediana = (array[middle - 1] + array[middle]) / 2.0;
+        }
+
+        Arrays.sort(array, new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2) {
-                System.out.printf("o1: %d o2: %d || median dif = %.1f, %.1f\n", o1, o2, (median - o1), (median - o2));
-                //if (median > o1)
-                if ((median - o1) > (median - o2))
-                    return -1;
-                else if ((median - o1) < (median - o2))
-                    return 1;
-                else
-                    return Integer.compare(o1, o2);
+                double result = Math.abs(o1 - mediana) - Math.abs(o2 - mediana);
+
+                return result == 0 ? o1 - o2 : (int) Math.round(result);
             }
         });
-        return arrList.toArray(new Integer[]{});
+
+        return array;
     }
 }
