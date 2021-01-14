@@ -6,6 +6,7 @@ import com.javarush.task.task30.task3008.Message;
 import com.javarush.task.task30.task3008.MessageType;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class Client {
     protected Connection connection;
@@ -44,25 +45,35 @@ public class Client {
     public class SocketThread extends Thread {
         @Override
         public void run() {
-
+            try {
+                connection = new Connection(new Socket(getServerAddress(), getServerPort()));
+                clientHandshake();
+                clientMainLoop();
+            } catch (IOException | ClassNotFoundException ioException) {
+                notifyConnectionStatusChanged(false);
+            }
         }
+
         //должен выводить текст message в консоль
-        protected void processIncomingMessage(String message){
+        protected void processIncomingMessage(String message) {
             ConsoleHelper.writeMessage(message);
         }
+
         //должен выводить в консоль информацию о том, что участник с именем userName присоединился к чату
-        protected void informAboutAddingNewUser(String userName){
+        protected void informAboutAddingNewUser(String userName) {
             ConsoleHelper.writeMessage(userName);
         }
+
         //должен выводить в консоль, что участник с именем userName покинул чат
-        protected void informAboutDeletingNewUser(String userName){
+        protected void informAboutDeletingNewUser(String userName) {
             ConsoleHelper.writeMessage(userName);
         }
+
         //этот метод должен:
         //а) Устанавливать значение поля clientConnected внешнего объекта Client в соответствии с переданным параметром.
         //б) Оповещать (пробуждать ожидающий) основной поток класса Client.
         protected void notifyConnectionStatusChanged(boolean clientConnected) {
-            synchronized (Client.this){
+            synchronized (Client.this) {
                 Client.this.clientConnected = clientConnected;
                 Client.this.notify();
             }
@@ -71,6 +82,8 @@ public class Client {
         protected void clientHandshake() throws IOException, ClassNotFoundException {
             while (true) {
                 Message msg = connection.receive();
+                if (msg.getType() == null)
+                    throw new IOException("Unexpected MessageType");
                 switch (msg.getType()) {
                     case NAME_REQUEST:
                         connection.send(new Message(MessageType.USER_NAME, getUserName()));
@@ -82,11 +95,19 @@ public class Client {
                         throw new IOException("Unexpected MessageType");
                 }
             }
-
         }
+
+
         protected void clientMainLoop() throws IOException, ClassNotFoundException {
             while (true) {
-            Message msg = connection.receive();
+                Message msg;
+                try {
+                    msg = connection.receive();
+                } catch (ClassNotFoundException e) {
+                    throw new IOException("Unexpected MessageType");
+                }
+                if (msg.getType() == null)
+                    throw new IOException("Unexpected MessageType");
                 switch (msg.getType()) {
                     case TEXT:
                         processIncomingMessage(msg.getData());
