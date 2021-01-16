@@ -12,25 +12,10 @@ import java.nio.file.Paths;
 //Main class
 public class Archiver {
     public static void main(String[] args) throws Exception {
-        Path zipFilePath = Paths.get("D:\\temp_java\\tmp.zip");
-        Path sourceFilePath = Paths.get("D:\\temp_java\\tag.html");
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            //zipFilePath = Paths.get(reader.readLine());
-            //sourceFilePath = Paths.get(reader.readLine());
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-        ZipFileManager zipFileManager = new ZipFileManager(zipFilePath);
-        zipFileManager.createZip(sourceFilePath);
-
-        Operation operation;
-        while (true) {
+        Operation operation = null;
+        while (operation != Operation.EXIT) {
             try {
                 operation = askOperation();
-                if (operation == Operation.EXIT) {
-                    new ExitCommand().execute();
-                    break;
-                }
                 CommandExecutor.execute(operation);
             } catch (WrongZipFileException e) {
                 ConsoleHelper.writeMessage("Вы не выбрали файл архива или выбрали неверный файл.");
@@ -38,7 +23,6 @@ public class Archiver {
                 ConsoleHelper.writeMessage("Произошла ошибка. Проверьте введенные данные.");
             }
         }
-
     }
 
     //Method for requesting needed operation
