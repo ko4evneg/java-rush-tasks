@@ -4,27 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-//Class for managing console input and output
 public class ConsoleHelper {
-    public static void writeMessage(String message){
+    private static BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
+    public static void writeMessage(String message) {
         System.out.println(message);
     }
 
-    public static String readString(){
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            return reader.readLine();
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-        return "";
+    public static String readString() throws IOException {
+        String text = ConsoleHelper.bis.readLine();
+        return text;
     }
 
-    public static int readInt(){
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            return Integer.parseInt(reader.readLine());
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        }
-        return -1;
+    public static int readInt() throws IOException {
+        String text = readString();
+        return Integer.parseInt(text.trim());
     }
 }
