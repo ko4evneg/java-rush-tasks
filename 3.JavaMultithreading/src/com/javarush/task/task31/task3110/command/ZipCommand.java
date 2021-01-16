@@ -6,12 +6,11 @@ import com.javarush.task.task31.task3110.ZipFileManager;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-//Commands for working with zip archive (non-supplement)
 public abstract class ZipCommand implements Command {
+
     public ZipFileManager getZipFileManager() throws Exception {
-        String zipFileName = ConsoleHelper.readString();
-        Path zipFilePath = Paths.get(zipFileName);
-        ZipFileManager zipFileManager = new ZipFileManager(zipFilePath);
-        return zipFileManager;
+        ConsoleHelper.writeMessage("Введите полный путь файла архива:");
+        Path zipPath = Paths.get(ConsoleHelper.readString());
+        return new ZipFileManager(zipPath);
     }
 }
