@@ -18,6 +18,7 @@ public class ZipFileManager {
         this.zipFile = zipFile;
     }
 
+    //Archives source to zipFile recursevily
     public void createZip(Path source) throws Exception {
         Path zipDirectory = zipFile.getParent();
         if (Files.notExists(zipDirectory))
