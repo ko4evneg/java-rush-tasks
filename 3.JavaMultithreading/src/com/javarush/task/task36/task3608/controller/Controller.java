@@ -9,7 +9,7 @@ public class Controller {
     private UsersView usersView;
     private EditUserView editUserView;
 
-    public void onShowAllUsers(){
+    public void onShowAllUsers() {
         model.loadUsers();
         usersView.refresh(model.getModelData());
     }
@@ -18,6 +18,7 @@ public class Controller {
         model.loadDeletedUsers();
         usersView.refresh(model.getModelData());
     }
+
     public void setModel(Model model) {
         this.model = model;
     }
@@ -29,4 +30,10 @@ public class Controller {
     public void setEditUserView(EditUserView editUserView) {
         this.editUserView = editUserView;
     }
+
+    public void onOpenUserEditForm(long id) {
+        model.loadUserById(id);
+        editUserView.refresh(model.getModelData());
+    }
 }
+
