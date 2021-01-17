@@ -16,9 +16,9 @@ public class FakeModel implements Model{
     @Override
     public void loadUsers() {
         List<User> users = new ArrayList<>();
-        users.add(new User("Oleg", 211, 0));
-        users.add(new User("Vasya", 212, 0));
-        users.add(new User("Petr", 213, 0));
+        users.add(new User("Oleg", 211, 1));
+        users.add(new User("Vasya", 212, 2));
+        users.add(new User("Petr", 213, 3));
         modelData.setUsers(users);
     }
 }
